@@ -1,0 +1,40 @@
+University Campus Background Images — Sources
+================================================
+All images are from Unsplash (unsplash.com), free to use under the
+Unsplash License: free for commercial and personal use, no attribution
+required. https://unsplash.com/license
+
+1. Modern red brick building, concrete plaza — Porter Raab
+   Page:  https://unsplash.com/photos/red-brick-building-on-concrete-plaza-Ucr4Yp-t364
+   Image: https://images.unsplash.com/photo-1592280771190-3e2e4d571952
+
+2. Brown and white concrete building — Erika Fletcher
+   Page:  https://unsplash.com/photos/brown-and-white-concrete-building-MZxqc6n9qCw
+   Image: https://images.unsplash.com/photo-1591123120675-6f7f1aae0e5b
+
+3. Brown concrete building — Michael Marsh
+   Page:  https://unsplash.com/photos/brown-concrete-building-U0dBV_QeiYk
+   Image: https://images.unsplash.com/photo-1562774053-701939374585
+
+4. Brown building with green grass field — Camilo Botia
+   Page:  https://unsplash.com/photos/brown-building-with-green-grass-field-k4vFDPJoDZk
+   Image: https://images.unsplash.com/photo-1583373834259-46cc92173cb7
+
+5. White university during daytime — Emily Karakis
+   Page:  https://unsplash.com/photos/white-university-during-daytime-T-tVt4xsCdE
+   Image: https://images.unsplash.com/photo-1559135197-8a45ea74d367
+
+Note on downloading:
+--------------------
+This sandbox's network egress is restricted to an allowlist that does
+not include images.unsplash.com, so the actual image bytes could not
+be fetched and saved here automatically. The website currently
+hotlinks image #1 directly from Unsplash's CDN (which is permitted
+under the license and needs no local file).
+
+To get real local copies in this folder:
+  1. Open any "Page" link above in a browser.
+  2. Click Download on the photo.
+  3. Save the file into this folder (university-bg-assets/).
+  4. Send it back to me and I'll wire the local file into the page
+     instead of the hotlink.

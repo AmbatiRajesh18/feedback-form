@@ -1,0 +1,512 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Feedback — Student Portal</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink: #1b1c2b;
+    --ink-soft: rgba(27,28,43,0.6);
+    --violet: #7c6ef2;
+    --violet-deep: #5a4bd6;
+    --amber: #ffb454;
+    --glass: rgba(255,255,255,0.14);
+    --glass-strong: rgba(255,255,255,0.22);
+    --glass-border: rgba(255,255,255,0.35);
+    --danger: #ff6b6b;
+  }
+
+  *{ margin:0; padding:0; box-sizing:border-box; }
+
+  body{
+    font-family:'Inter', sans-serif;
+    color: var(--ink);
+    min-height:100vh;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    padding: 32px 20px;
+    background:
+      radial-gradient(circle at 15% 20%, rgba(124,110,242,0.55), transparent 45%),
+      radial-gradient(circle at 85% 15%, rgba(255,180,84,0.30), transparent 40%),
+      radial-gradient(circle at 75% 85%, rgba(90,75,214,0.55), transparent 45%),
+      radial-gradient(circle at 20% 90%, rgba(255,107,107,0.20), transparent 40%),
+      linear-gradient(160deg, rgba(34,31,82,0.88) 0%, rgba(55,47,122,0.85) 45%, rgba(75,47,110,0.88) 100%),
+      url("https://images.unsplash.com/photo-1592280771190-3e2e4d571952?fm=jpg&q=70&w=1920&auto=format&fit=crop");
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+  }
+
+  h1,h2,h3{ font-family:'Sora', sans-serif; }
+
+  .backdrop-orb{
+    position: fixed;
+    border-radius: 50%;
+    filter: blur(2px);
+    z-index: -1;
+  }
+
+  .card{
+    width:100%;
+    max-width: 460px;
+    background: var(--glass);
+    border: 1px solid var(--glass-border);
+    border-radius: 28px;
+    backdrop-filter: blur(22px) saturate(140%);
+    -webkit-backdrop-filter: blur(22px) saturate(140%);
+    box-shadow:
+      0 20px 60px rgba(20,10,50,0.35),
+      inset 0 1px 0 rgba(255,255,255,0.4);
+    overflow:hidden;
+    color: #fff;
+  }
+
+  .header{
+    padding: 34px 34px 20px;
+  }
+
+  .header .eyebrow{
+    color: rgba(255,255,255,0.65);
+    font-size: 14px;
+    margin-bottom: 6px;
+  }
+
+  .header h1{
+    font-size: 26px;
+    font-weight: 600;
+    letter-spacing: -0.01em;
+  }
+
+  .main-content{ padding: 6px 34px 34px; }
+
+  .form-group{ margin-bottom: 18px; }
+
+  label{
+    display:block;
+    margin-bottom: 8px;
+    font-size: 13px;
+    color: rgba(255,255,255,0.75);
+    font-weight: 500;
+  }
+
+  input, select, textarea{
+    width:100%;
+    padding: 13px 16px;
+    border-radius: 14px;
+    border: 1px solid rgba(255,255,255,0.28);
+    background: rgba(255,255,255,0.09);
+    color: #fff;
+    font-size: 15px;
+    font-family: 'Inter', sans-serif;
+    outline: none;
+    transition: border-color .2s ease, background .2s ease;
+  }
+
+  input::placeholder, textarea::placeholder{ color: rgba(255,255,255,0.45); }
+
+  select{ color: #fff; }
+  select option{ color: #1b1c2b; }
+
+  input:focus, select:focus, textarea:focus{
+    border-color: var(--amber);
+    background: rgba(255,255,255,0.15);
+  }
+
+  textarea{ height: 120px; resize: vertical; }
+
+  button{
+    width:100%;
+    padding: 14px;
+    border: none;
+    border-radius: 14px;
+    font-size: 15px;
+    font-weight: 600;
+    font-family: 'Sora', sans-serif;
+    cursor: pointer;
+    color: #221f52;
+    background: linear-gradient(135deg, #ffe1a8, var(--amber));
+    transition: transform .15s ease, box-shadow .15s ease;
+  }
+
+  button:hover{
+    transform: translateY(-1px);
+    box-shadow: 0 10px 24px rgba(255,180,84,0.35);
+  }
+
+  button:active{ transform: translateY(0); }
+
+  .toggle-link{
+    text-align:center;
+    margin-top: 16px;
+    color: rgba(255,255,255,0.75);
+    font-size: 14px;
+    cursor:pointer;
+  }
+
+  .toggle-link:hover{ color: #fff; text-decoration: underline; }
+
+  .feedback-form{ display:none; }
+
+  .nav{
+    display:flex;
+    justify-content: space-between;
+    align-items:center;
+    margin-bottom: 24px;
+    padding-bottom: 18px;
+    border-bottom: 1px solid rgba(255,255,255,0.2);
+  }
+
+  .nav h2{ font-size: 19px; font-weight: 500; }
+  .nav h2 span{ font-weight: 700; color: var(--amber); }
+
+  .logout-btn{
+    width:auto;
+    padding: 9px 18px;
+    font-size: 13px;
+    background: rgba(255,107,107,0.18);
+    color: #ffdada;
+    border: 1px solid rgba(255,107,107,0.4);
+  }
+
+  .logout-btn:hover{
+    background: rgba(255,107,107,0.3);
+    box-shadow: none;
+  }
+
+  h3{
+    font-size: 15px;
+    font-weight: 500;
+    color: rgba(255,255,255,0.85);
+    margin-bottom: 14px;
+  }
+
+  .rating{
+    display:flex;
+    gap: 10px;
+    margin: 4px 0 20px;
+    font-size: 32px;
+  }
+
+  .star{
+    cursor:pointer;
+    color: rgba(255,255,255,0.25);
+    transition: color .15s ease, transform .1s ease;
+  }
+
+  .star:hover{ transform: scale(1.1); }
+  .star.active{ color: var(--amber); }
+
+  .success{
+    text-align:center;
+    margin: 18px 0 4px;
+    font-size: 15px;
+    font-weight: 500;
+    color: #b6f5c8;
+    background: rgba(80,220,140,0.15);
+    border: 1px solid rgba(80,220,140,0.35);
+    border-radius: 12px;
+    padding: 12px;
+    display:none;
+  }
+
+  .feedback-history{ margin-top: 30px; }
+
+  .feedback-card{
+    background: rgba(255,255,255,0.08);
+    border: 1px solid rgba(255,255,255,0.18);
+    padding: 16px 18px;
+    border-radius: 16px;
+    margin-bottom: 12px;
+  }
+
+  .feedback-card p{ font-size: 14px; margin: 6px 0; color: rgba(255,255,255,0.85); line-height: 1.5; }
+  .feedback-card small{ color: rgba(255,255,255,0.5); font-size: 12px; }
+
+  .subject-tag{
+    display:inline-block;
+    background: rgba(124,110,242,0.35);
+    color: #e7e2ff;
+    padding: 4px 12px;
+    border-radius: 20px;
+    font-size: 12px;
+    margin-bottom: 8px;
+    border: 1px solid rgba(124,110,242,0.5);
+  }
+
+  .empty-state{
+    color: rgba(255,255,255,0.5);
+    text-align:center;
+    font-size: 14px;
+    padding: 20px 0;
+  }
+
+  @media (max-width: 480px){
+    .header, .main-content{ padding-left: 24px; padding-right: 24px; }
+  }
+
+  @media (prefers-reduced-motion: reduce){
+    button, .star{ transition: none; }
+  }
+</style>
+</head>
+<body>
+
+  <div class="card">
+    <div class="header">
+      <div class="eyebrow">Student Portal</div>
+      <h1>Course Feedback</h1>
+    </div>
+
+    <div class="main-content">
+      <!-- Login / Signup -->
+      <div id="auth-section">
+        <div id="login-form">
+          <div class="form-group">
+            <label for="login-email">Email</label>
+            <input type="email" id="login-email" placeholder="you@school.edu" required>
+          </div>
+          <div class="form-group">
+            <label for="login-password">Password</label>
+            <input type="password" id="login-password" placeholder="Enter password" required>
+          </div>
+          <button onclick="login()">Log in</button>
+          <div class="toggle-link" onclick="toggleForms()">New here? Create an account</div>
+        </div>
+
+        <div id="signup-form" style="display: none;">
+          <div class="form-group">
+            <label for="signup-name">Full name</label>
+            <input type="text" id="signup-name" placeholder="Enter your name" required>
+          </div>
+          <div class="form-group">
+            <label for="signup-email">Email</label>
+            <input type="email" id="signup-email" placeholder="you@school.edu" required>
+          </div>
+          <div class="form-group">
+            <label for="signup-password">Password</label>
+            <input type="password" id="signup-password" placeholder="Create password" required>
+          </div>
+          <button onclick="signup()">Create account</button>
+          <div class="toggle-link" onclick="toggleForms()">Already have an account? Log in</div>
+        </div>
+      </div>
+
+      <!-- Feedback Form -->
+      <div id="feedback-section" class="feedback-form">
+        <div class="nav">
+          <h2>Welcome, <span id="user-name"></span></h2>
+          <button class="logout-btn" onclick="logout()">Log out</button>
+        </div>
+
+        <h3>Rate a subject</h3>
+
+        <div class="form-group">
+          <label for="subject">Subject</label>
+          <select id="subject" required>
+            <option value="">Choose a subject</option>
+            <option value="Mathematics">Mathematics</option>
+            <option value="Physics">Physics</option>
+            <option value="Chemistry">Chemistry</option>
+            <option value="Biology">Biology</option>
+            <option value="Computer Science">Computer Science</option>
+            <option value="English Literature">English Literature</option>
+            <option value="History">History</option>
+            <option value="Geography">Geography</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label>Rating</label>
+          <div class="rating" id="rating">
+            <span class="star" data-value="1">★</span>
+            <span class="star" data-value="2">★</span>
+            <span class="star" data-value="3">★</span>
+            <span class="star" data-value="4">★</span>
+            <span class="star" data-value="5">★</span>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="feedback-text">Feedback</label>
+          <textarea id="feedback-text" placeholder="Share your honest thoughts on this subject..."></textarea>
+        </div>
+
+        <button onclick="submitFeedback()">Submit feedback</button>
+
+        <div id="feedback-success" class="success">Feedback submitted. Thank you.</div>
+
+        <div class="feedback-history">
+          <h3>Your feedback history</h3>
+          <div id="feedback-list"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    let currentUser = null;
+    let currentRating = 0;
+
+    function toggleForms() {
+      const loginForm = document.getElementById('login-form');
+      const signupForm = document.getElementById('signup-form');
+      loginForm.style.display = loginForm.style.display === 'none' ? 'block' : 'none';
+      signupForm.style.display = signupForm.style.display === 'none' ? 'block' : 'none';
+    }
+
+    function signup() {
+      const name = document.getElementById('signup-name').value.trim();
+      const email = document.getElementById('signup-email').value.trim();
+      const password = document.getElementById('signup-password').value;
+
+      if (!name || !email || !password) {
+        alert("Please fill all fields");
+        return;
+      }
+
+      let users = JSON.parse(localStorage.getItem('users')) || [];
+      if (users.find(user => user.email === email)) {
+        alert("An account with this email already exists.");
+        return;
+      }
+
+      users.push({ name, email, password });
+      localStorage.setItem('users', JSON.stringify(users));
+
+      alert("Account created. Please log in.");
+      toggleForms();
+      document.getElementById('signup-name').value = '';
+      document.getElementById('signup-email').value = '';
+      document.getElementById('signup-password').value = '';
+    }
+
+    function login() {
+      const email = document.getElementById('login-email').value.trim();
+      const password = document.getElementById('login-password').value;
+
+      if (!email || !password) {
+        alert("Please enter email and password");
+        return;
+      }
+
+      let users = JSON.parse(localStorage.getItem('users')) || [];
+      const user = users.find(u => u.email === email && u.password === password);
+
+      if (user) {
+        currentUser = user;
+        showFeedbackSection();
+      } else {
+        alert("Invalid email or password.");
+      }
+    }
+
+    function showFeedbackSection() {
+      document.getElementById('auth-section').style.display = 'none';
+      document.getElementById('feedback-section').style.display = 'block';
+      document.getElementById('user-name').textContent = currentUser.name;
+      loadUserFeedbacks();
+      resetFeedbackForm();
+    }
+
+    function setupRating() {
+      const stars = document.querySelectorAll('.star');
+      stars.forEach(star => {
+        star.addEventListener('click', () => {
+          currentRating = parseInt(star.getAttribute('data-value'));
+          stars.forEach(s => {
+            s.classList.toggle('active', parseInt(s.getAttribute('data-value')) <= currentRating);
+          });
+        });
+      });
+    }
+
+    function submitFeedback() {
+      const subject = document.getElementById('subject').value;
+      const feedbackText = document.getElementById('feedback-text').value.trim();
+
+      if (!subject) { alert("Please select a subject"); return; }
+      if (currentRating === 0) { alert("Please give a rating"); return; }
+      if (!feedbackText) { alert("Please write your feedback"); return; }
+
+      let feedbacks = JSON.parse(localStorage.getItem('feedbacks')) || [];
+      feedbacks.push({
+        studentName: currentUser.name,
+        email: currentUser.email,
+        subject: subject,
+        rating: currentRating,
+        feedback: feedbackText,
+        date: new Date().toLocaleDateString()
+      });
+      localStorage.setItem('feedbacks', JSON.stringify(feedbacks));
+
+      const successEl = document.getElementById('feedback-success');
+      successEl.style.display = 'block';
+      setTimeout(() => {
+        successEl.style.display = 'none';
+        resetFeedbackForm();
+        loadUserFeedbacks();
+      }, 2000);
+    }
+
+    function resetFeedbackForm() {
+      document.getElementById('subject').value = '';
+      document.getElementById('feedback-text').value = '';
+      currentRating = 0;
+      document.querySelectorAll('.star').forEach(s => s.classList.remove('active'));
+    }
+
+    function loadUserFeedbacks() {
+      const feedbackList = document.getElementById('feedback-list');
+      feedbackList.innerHTML = '';
+
+      let feedbacks = JSON.parse(localStorage.getItem('feedbacks')) || [];
+      const userFeedbacks = feedbacks.filter(f => f.email === currentUser.email);
+
+      if (userFeedbacks.length === 0) {
+        feedbackList.innerHTML = '<p class="empty-state">No feedback submitted yet.</p>';
+        return;
+      }
+
+      userFeedbacks.reverse().forEach(fb => {
+        const card = document.createElement('div');
+        card.className = 'feedback-card';
+        card.innerHTML = `
+          <span class="subject-tag">${fb.subject}</span>
+          <p><strong>Rating:</strong> ${'★'.repeat(fb.rating)}</p>
+          <p><strong>Feedback:</strong> ${fb.feedback}</p>
+          <small>Submitted on ${fb.date}</small>
+        `;
+        feedbackList.appendChild(card);
+      });
+    }
+
+    function logout() {
+      if (confirm("Log out?")) {
+        currentUser = null;
+        document.getElementById('auth-section').style.display = 'block';
+        document.getElementById('feedback-section').style.display = 'none';
+        document.getElementById('login-email').value = '';
+        document.getElementById('login-password').value = '';
+      }
+    }
+
+    window.onload = function() {
+      setupRating();
+      let users = JSON.parse(localStorage.getItem('users')) || [];
+      if (users.length === 0) {
+        users.push({
+          name: "Ambati Student",
+          email: "student@example.com",
+          password: "123456"
+        });
+        localStorage.setItem('users', JSON.stringify(users));
+      }
+    };
+  </script>
+</body>
+</html>
